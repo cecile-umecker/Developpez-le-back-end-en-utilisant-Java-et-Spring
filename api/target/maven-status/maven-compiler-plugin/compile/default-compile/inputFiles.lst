@@ -1,0 +1,8 @@
+c:\Users\micka\Documents\GitHub\Developpez-le-back-end-en-utilisant-Java-et-Spring\api\src\main\java\com\rentalapi\api\ApiApplication.java
+c:\Users\micka\Documents\GitHub\Developpez-le-back-end-en-utilisant-Java-et-Spring\api\src\main\java\com\rentalapi\api\controller\AuthenticationController.java
+c:\Users\micka\Documents\GitHub\Developpez-le-back-end-en-utilisant-Java-et-Spring\api\src\main\java\com\rentalapi\api\model\User.java
+c:\Users\micka\Documents\GitHub\Developpez-le-back-end-en-utilisant-Java-et-Spring\api\src\main\java\com\rentalapi\api\repository\UserRepository.java
+c:\Users\micka\Documents\GitHub\Developpez-le-back-end-en-utilisant-Java-et-Spring\api\src\main\java\com\rentalapi\api\security\JwtAuthenticationFilter.java
+c:\Users\micka\Documents\GitHub\Developpez-le-back-end-en-utilisant-Java-et-Spring\api\src\main\java\com\rentalapi\api\security\JwtService.java
+c:\Users\micka\Documents\GitHub\Developpez-le-back-end-en-utilisant-Java-et-Spring\api\src\main\java\com\rentalapi\api\security\UserDetailsServiceImpl.java
+c:\Users\micka\Documents\GitHub\Developpez-le-back-end-en-utilisant-Java-et-Spring\api\src\main\java\com\rentalapi\api\securityconfig\SecurityConfig.java
