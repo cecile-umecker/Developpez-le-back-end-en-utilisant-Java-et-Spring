@@ -7,6 +7,7 @@ import com.rentalapi.api.dto.AuthResponseDTO;
 import com.rentalapi.api.exception.AuthException;
 import com.rentalapi.api.dto.UserLoginDTO;
 import com.rentalapi.api.dto.UserRegisterDTO;
+import com.rentalapi.api.dto.UserResponseDTO;
 import com.rentalapi.api.model.User;
 import com.rentalapi.api.repository.UserRepository;
 import com.rentalapi.api.security.JwtService;
@@ -28,14 +29,13 @@ public class AuthService {
 
         // Création de l'utilisateur
         User user = new User();
-        user.setUsername(dto.getUsername());
+        user.setName(dto.getName());
         user.setEmail(dto.getEmail());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         User savedUser = userRepository.save(user);
 
         //Généreration du token JWT
         String token = jwtService.generateToken(savedUser);
-        System.out.println(token); // debug
         return new AuthResponseDTO(token);
     }
 
@@ -54,4 +54,20 @@ public class AuthService {
         return new AuthResponseDTO(token);
     }
 
+    public UserResponseDTO me(String token) {
+        String email = jwtService.extractEmail(token);
+        if(!jwtService.isTokenValid(token)) {
+            throw new AuthException("Token invalide");
+        }
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new AuthException("Utilisateur non trouvé"));
+        return new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
+    }
 }

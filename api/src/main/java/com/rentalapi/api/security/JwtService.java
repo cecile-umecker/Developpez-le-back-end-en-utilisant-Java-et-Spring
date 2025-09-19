@@ -29,7 +29,6 @@ public class JwtService {
   }
 
   public String generateToken(User user) {
-    System.out.println("EMAIL DANS JWT GENERATE: " + user.getEmail()); // debug
     return Jwts.builder()
         .setSubject(user.getEmail())
         .setIssuedAt(new Date(System.currentTimeMillis()))

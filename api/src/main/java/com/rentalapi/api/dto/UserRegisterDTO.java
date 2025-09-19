@@ -10,7 +10,7 @@ import lombok.Data;
 public class UserRegisterDTO {
     @NotBlank(message = "username")
     @JsonProperty("name")
-    private String username;
+    private String name;
 
     @Email(message = "email")
     @NotBlank(message = "L'email est obligatoire")
