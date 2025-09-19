@@ -6,6 +6,8 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Service;
 
+import com.rentalapi.api.model.User;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -26,9 +28,10 @@ public class JwtService {
     return claimResolver.apply(claims);
   }
 
-  public String generateToken(String email) {
+  public String generateToken(User user) {
+    System.out.println("EMAIL DANS JWT GENERATE: " + user.getEmail()); // debug
     return Jwts.builder()
-        .setSubject(email)
+        .setSubject(user.getEmail())
         .setIssuedAt(new Date(System.currentTimeMillis()))
         .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
         .signWith(getSignInKey(), SignatureAlgorithm.HS256).compact();
