@@ -29,13 +29,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String path = request.getServletPath();
-        if (path.equals("/auth/register") || 
-            path.equals("/auth/login") || 
-            path.startsWith("/images/") ||           // Images publiques
-            path.startsWith("/v3/api-docs/") ||      // Swagger docs
-            path.startsWith("/swagger-ui/") ||       // Swagger UI
-            path.equals("/swagger-ui.html") ) {
+        String path = request.getRequestURI();
+        if (path.startsWith("/api/v3/api-docs") ||
+            path.startsWith("/api/swagger-ui") ||
+            path.equals("/api/swagger-ui.html") ||
+            path.startsWith("/api/auth/register") ||
+            path.startsWith("/api/auth/login") ||
+            path.startsWith("/api/images/")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -46,8 +46,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
             return;
-            // filterChain.doFilter(request, response);
-            // return;
         }
 
         jwt = authHeader.substring(7);
@@ -58,7 +56,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
             return;
         }
-        //userEmail = jwtService.extractEmail(jwt);
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
@@ -68,7 +65,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             } else {
-                // Token invalide → 401
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
                 return;
             }
