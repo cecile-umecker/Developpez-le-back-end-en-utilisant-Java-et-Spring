@@ -26,6 +26,13 @@ import com.rentalapi.api.repository.UserRepository;
 import com.rentalapi.api.service.FileStorageService;
 import com.rentalapi.api.service.RentalService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -37,6 +44,23 @@ public class RentalController {
   private final UserRepository userRepository;
   private final FileStorageService fileStorageService;
 
+  @Operation(summary = "Get rentals list",
+        parameters = {
+            @Parameter(
+                name = "Authorization",
+                description = "Bearer token (format: 'Bearer <JWT>')",
+                required = true,
+                in = ParameterIn.HEADER,
+                schema = @Schema(type = "string")
+            )
+        })
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Information retrieved",
+                    content = @Content(mediaType = "application/json", schema = @Schema(example = "{ \"rentals\": [ { \"id\": 1, \"name\": \"test house 1\", \"surface\": 432, \"price\": 300, \"picture\": \"https://...\", \"description\": \"...\", \"owner_id\": 1, \"created_at\": \"2012/12/02\", \"updated_at\": \"2014/12/02\" } ] }"
+            ))),
+        @ApiResponse(responseCode = "401", description = "Missing or invalid token",
+                    content = @Content(mediaType = "application/json"))
+    })
   @GetMapping
   public ResponseEntity<Map<String, List<RentalSummaryDTO>>> getAllRentals() {
     Map<String, List<RentalSummaryDTO>> response = new HashMap<>();
@@ -44,6 +68,28 @@ public class RentalController {
     return ResponseEntity.ok(response);
   }
 
+  @Operation(summary = "Create new rental",
+        parameters = {
+            @Parameter(
+                name = "Authorization",
+                description = "Bearer token (format: 'Bearer <JWT>')",
+                required = true,
+                in = ParameterIn.HEADER,
+                schema = @Schema(type = "string")
+            )
+        })
+    @ApiResponses(value = {
+        @ApiResponse(
+                responseCode = "200",
+                description = "Rental created",
+                content = @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(example = "{ \"message\": \"Rental created !\" }")
+                )
+        ),
+        @ApiResponse(responseCode = "401", description = "Missing or invalid token",
+                    content = @Content(mediaType = "application/json"))
+    })
   @PostMapping(consumes = "multipart/form-data")
   public ResponseEntity<Map<String, String>> createRental(
           @RequestParam String name,
@@ -77,6 +123,22 @@ public class RentalController {
       return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
+  @Operation(summary = "Get rental information",
+        parameters = {
+            @Parameter(
+                name = "Authorization",
+                description = "Bearer token (format: 'Bearer <JWT>')",
+                required = true,
+                in = ParameterIn.HEADER,
+                schema = @Schema(type = "string")
+            )
+        })
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Information retrieved",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RentalDTO.class))),
+        @ApiResponse(responseCode = "401", description = "Missing or invalid token",
+                    content = @Content(mediaType = "application/json"))
+    })
   @GetMapping("/{id}")
   public ResponseEntity<RentalDTO> getRentalById(@PathVariable Integer id) {
       RentalDTO rentalDTO = rentalService.getRentalById(id)
@@ -84,6 +146,28 @@ public class RentalController {
       return ResponseEntity.ok(rentalDTO);
   }
 
+  @Operation(summary = "Update rental",
+        parameters = {
+            @Parameter(
+                name = "Authorization",
+                description = "Bearer token (format: 'Bearer <JWT>')",
+                required = true,
+                in = ParameterIn.HEADER,
+                schema = @Schema(type = "string")
+            )
+        })
+    @ApiResponses(value = {
+        @ApiResponse(
+                responseCode = "200",
+                description = "Rental created",
+                content = @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(example = "{ \"message\": \"Rental updated !\" }")
+                )
+        ),
+        @ApiResponse(responseCode = "401", description = "Missing or invalid token",
+                    content = @Content(mediaType = "application/json"))
+    })
   @PutMapping(value = "/{id}", consumes = "multipart/form-data")
   public ResponseEntity<Map<String, String>> updateRental(
           @PathVariable Integer id,

@@ -13,6 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rentalapi.api.dto.MessageCreateDTO;
 import com.rentalapi.api.service.MessageService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -22,6 +29,30 @@ public class MessageController {
 
   private final MessageService messageService;
 
+  @Operation(summary = "Send message to owner",
+    parameters = {
+            @Parameter(
+                name = "Authorization",
+                description = "Bearer token (format: 'Bearer <JWT>')",
+                required = true,
+                in = ParameterIn.HEADER,
+                schema = @Schema(type = "string")
+            )
+        })
+    @ApiResponses(value = {
+        @ApiResponse(
+                responseCode = "200",
+                description = "Rental created",
+                content = @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(example = "{ \"message\": \"Message send with success\" }")
+                )
+        ),
+        @ApiResponse(responseCode = "400", description = "Bad request",
+                    content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "401", description = "Missing or invalid token",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class)))
+    })
   @PostMapping
   public ResponseEntity<Map<String, String>> sendMessage(@RequestBody MessageCreateDTO dto) {
     try {

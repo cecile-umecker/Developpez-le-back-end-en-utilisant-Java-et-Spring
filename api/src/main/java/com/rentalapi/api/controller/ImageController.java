@@ -8,18 +8,20 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpServletRequest;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RestController
-@RequestMapping("/images")  // Sans /api car déjà dans le context-path
+@RequestMapping("/images")
 public class ImageController {
     
     @Value("${app.upload.dir:uploads}")
     private String uploadDir;
     
+    @Hidden
     @GetMapping("/{filename:.+}")
     public ResponseEntity<Resource> getImage(@PathVariable String filename, HttpServletRequest request) {
         try {
@@ -50,6 +52,7 @@ public class ImageController {
         }
     }
     
+    @Hidden
     @RequestMapping(value = "/{filename:.+}", method = RequestMethod.OPTIONS)
     public ResponseEntity<Void> handleOptions() {
         return ResponseEntity.ok()
