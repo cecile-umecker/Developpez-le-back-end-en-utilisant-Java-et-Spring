@@ -6,16 +6,26 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Configuration class for customizing Spring MVC settings.
+ *
+ * This class enables Web MVC and provides custom configurations for:
+ * - Serving static resources from the 'uploads' directory under the '/uploads/**' URL pattern.
+ * - Setting cache period for static resources to 1 hour.
+ * - Configuring Cross-Origin Resource Sharing (CORS) to allow all origins, all headers,
+ *   and common HTTP methods with credentials support.
+ */
 @Configuration
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Configuration pour servir les fichiers du dossier uploads
+        // Configuration to serve files from the uploads folder
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:uploads/") // Chemin relatif à la racine du projet
-                .setCachePeriod(3600) // Cache de 1 heure
+                // Path relative to the project root
+                .addResourceLocations("file:uploads/")
+                .setCachePeriod(3600) // 1hour cache
                 .resourceChain(true);
     }
 

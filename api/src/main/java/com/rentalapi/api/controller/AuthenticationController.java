@@ -22,6 +22,17 @@ import lombok.RequiredArgsConstructor;
 
 import io.swagger.v3.oas.annotations.media.*;
 
+/*
+ * Controller for handling authentication-related endpoints such as user registration, login, and retrieving current user information.
+ *
+ * Endpoints:
+ *   - POST /auth/register: Register a new user.
+ *   - POST /auth/login: Authenticate a user and return a JWT token.
+ *   - GET /auth/me: Retrieve information about the currently authenticated user.
+ *
+ * Cross-origin requests are allowed from http://localhost:4200.
+ * Uses AuthService for authentication logic.
+ */
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -57,7 +68,6 @@ public class AuthenticationController {
             AuthResponseDTO response = authService.login(dto);
             return ResponseEntity.ok(response);
         } catch (AuthException e) {
-            // utiliser le message de l'exception directement
             return ResponseEntity.status(401).body(new ErrorResponseDTO(e.getMessage()));
         }
     }
