@@ -9,6 +9,23 @@ import com.rentalapi.api.model.Rental;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+/**
+ * Data Transfer Object (DTO) for Rental entity.
+ * Represents rental property details for API responses.
+ *
+ * @property id Unique identifier of the rental
+ * @property name Name of the rental property
+ * @property surface Surface area of the rental (in square meters)
+ * @property price Price of the rental
+ * @property picture List of URLs pointing to rental property images
+ * @property description Description of the rental property
+ * @property owner_id Unique identifier of the rental owner
+ * @property created_at Creation date of the rental record (formatted as yyyy/MM/dd)
+ * @property updated_at Last update date of the rental record (formatted as yyyy/MM/dd)
+ *
+ * Provides a static method fromEntity(Rental rental) to convert a Rental entity to RentalDTO.
+ */
+
 @Getter
 @Setter
 @NoArgsConstructor

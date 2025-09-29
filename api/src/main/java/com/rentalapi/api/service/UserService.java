@@ -9,6 +9,14 @@ import com.rentalapi.api.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.*;
 
+/**
+ * Service class for handling user-related operations.
+ * This class provides methods for retrieving user information.
+ * 
+ * @Service Indicates that this class is a Spring service component
+ * @RequiredArgsConstructor Generates a constructor with required arguments (final fields)
+ */
+
 @Service
 @RequiredArgsConstructor
 public class UserService {

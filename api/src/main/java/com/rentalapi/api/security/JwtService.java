@@ -14,6 +14,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+/**
+ * Service class for handling JWT operations such as token generation and validation.
+ * This class provides methods to create JWT tokens, extract claims, and validate tokens.
+ * 
+ * @Service Indicates that this class is a Spring service component
+ */
+
 @Service
 public class JwtService {
   

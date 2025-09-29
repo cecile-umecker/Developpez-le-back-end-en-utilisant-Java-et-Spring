@@ -7,6 +7,23 @@ import com.rentalapi.api.model.Rental;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+/**
+ * Data Transfer Object (DTO) representing a summary view of a rental property.
+ * This class is used to transfer rental data between different layers of the application
+ * while hiding the complexity of the underlying Rental entity.
+ *
+ * @Schema annotation is used to provide OpenAPI/Swagger documentation for each field
+ *
+ * The class includes:
+ * - Basic rental information (id, name, surface, price)
+ * - Property details (picture URL, description)
+ * - Ownership information (owner_id)
+ * - Temporal data (creation and update dates)
+ *
+ * The class provides a static factory method 'fromEntity' to convert a Rental entity to this DTO
+ * with formatted dates (yyyy/MM/dd).
+ */
+
 @Getter
 @Setter
 @NoArgsConstructor

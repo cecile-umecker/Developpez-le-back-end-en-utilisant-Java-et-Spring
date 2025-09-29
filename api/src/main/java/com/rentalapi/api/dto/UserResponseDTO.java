@@ -9,6 +9,22 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+/**
+ * Data Transfer Object (DTO) representing user response information.
+ * This class is used to transfer user data between layers of the application.
+ *
+ * The class includes the following user information:
+ * - User ID
+ * - Full name
+ * - Email address 
+ * - Account creation date
+ * - Account update date
+ *
+ * Uses Lombok @Data for automatic getter/setter generation
+ * Uses Jackson annotations for JSON property mapping
+ * Uses Swagger annotations for API documentation
+ */
+
 @Data
 @AllArgsConstructor
 public class UserResponseDTO {

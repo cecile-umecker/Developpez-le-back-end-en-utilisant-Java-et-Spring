@@ -5,6 +5,14 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Entity class representing a message in the rental system.
+ * This class maps to the MESSAGES table in the database.
+ * 
+ * @Entity Indicates that this class is a JPA entity
+ * @Table Specifies the table name in the database
+ */
+
 @Entity
 @Getter
 @Setter

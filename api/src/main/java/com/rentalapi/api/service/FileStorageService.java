@@ -14,6 +14,13 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
+/**
+ * Service class for handling file storage operations.
+ * This class provides methods to store files and manage the upload directory.
+ * 
+ * @Service Indicates that this class is a Spring service component
+ */
+
 @Service
 public class FileStorageService {
     

@@ -18,6 +18,13 @@ import com.rentalapi.api.security.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
+/**
+ * Security configuration class for the application.
+ * This class sets up security filters, CORS configuration, and authorization rules.
+ * 
+ * @Configuration Indicates that this class contains Spring configuration
+ */
+
 @Configuration
 public class SecurityConfig {
 

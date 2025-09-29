@@ -19,6 +19,14 @@ import com.rentalapi.api.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Service class for handling rental-related operations.
+ * This class provides methods for creating, updating, and retrieving rental information.
+ * 
+ * @Service Indicates that this class is a Spring service component
+ * @RequiredArgsConstructor Generates a constructor with required arguments (final fields)
+ */
+
 @Service
 @RequiredArgsConstructor
 public class RentalService {

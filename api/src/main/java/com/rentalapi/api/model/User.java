@@ -5,6 +5,18 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents a User entity in the rental system.
+ * This class is mapped to the "USERS" table in the database.
+ *
+ * @Entity annotation indicates that this class is a JPA entity
+ * @Table specifies the table name in the database
+ * @Data Lombok annotation to automatically generate getters, setters, toString, equals, and hashCode methods
+ * @NoArgsConstructor Lombok annotation to generate a no-args constructor
+ * @AllArgsConstructor Lombok annotation to generate a constructor with all arguments
+ * @Builder Lombok annotation to implement the Builder pattern
+ */
+
 @Entity
 @Table(name = "USERS")
 @Data

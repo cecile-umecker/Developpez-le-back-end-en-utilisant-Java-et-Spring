@@ -5,6 +5,14 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Entity class representing a rental property in the system.
+ * This class maps to the RENTALS table in the database.
+ *
+ * @Entity annotation indicates that this class is a JPA entity
+ * @Table annotation specifies the table name in the database
+ */
+
 @Entity
 @Table(name = "RENTALS")
 @Getter
