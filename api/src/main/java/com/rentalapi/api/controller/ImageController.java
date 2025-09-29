@@ -35,9 +35,6 @@ import java.nio.file.Paths;
  *   - Access-Control-Allow-Headers: *
  *   - Cross-Origin-Resource-Policy: cross-origin
  *   - Cross-Origin-Embedder-Policy: unsafe-none
- *
- * The controller is hidden from Swagger/OpenAPI documentation using the
- * io.swagger.v3.oas.annotations.Hidden annotation.
  */
 
 @RestController

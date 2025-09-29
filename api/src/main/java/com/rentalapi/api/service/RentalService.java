@@ -1,25 +1,30 @@
 package com.rentalapi.api.service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.rentalapi.api.dto.RentalCreateDTO;
+import com.rentalapi.api.dto.RentalCreateRequestDTO;
 import com.rentalapi.api.dto.RentalDTO;
 import com.rentalapi.api.dto.RentalSummaryDTO;
+import com.rentalapi.api.dto.RentalUpdateRequestDTO;
 import com.rentalapi.api.model.Rental;
 import com.rentalapi.api.model.User;
 import com.rentalapi.api.repository.RentalRepository;
+import com.rentalapi.api.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class RentalService {
     private final RentalRepository rentalRepository;
-
-    public RentalService(RentalRepository rentalRepository) {
-        this.rentalRepository = rentalRepository;
-    }
+    private final UserRepository userRepository;
+    private final FileStorageService fileStorageService;
 
     public List<RentalSummaryDTO> getAllRentals() {
         return rentalRepository.findAll()
@@ -28,12 +33,17 @@ public class RentalService {
                 .toList();
     }
 
-    public RentalDTO createRental(RentalCreateDTO dto, User owner, String pictureUrl) {
+    public RentalDTO createRental(RentalCreateRequestDTO request, UserDetails userDetails) throws IOException {
+        User owner = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String pictureUrl = fileStorageService.storeFile(request.getPicture());
+
         Rental rental = Rental.builder()
-                .name(dto.getName())
-                .surface(dto.getSurface())
-                .price(dto.getPrice())
-                .description(dto.getDescription())
+                .name(request.getName())
+                .surface(request.getSurface())
+                .price(request.getPrice())
+                .description(request.getDescription())
                 .picture(pictureUrl)
                 .owner_id(owner)
                 .createdAt(LocalDateTime.now())
@@ -41,33 +51,33 @@ public class RentalService {
                 .build();
 
         rentalRepository.save(rental);
+
         return RentalDTO.fromEntity(rental);
     }
 
-    public Optional<RentalDTO> getRentalById(Integer id) {
-        return rentalRepository.findById(id).map(RentalDTO::fromEntity);
-    }
-
-    public void updateRental(Integer id, User owner, String name, Float surface, Float price, String description, String pictureUrl) {
+    public void updateRental(Integer id, RentalUpdateRequestDTO request, UserDetails userDetails) {
+        User owner = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         Rental rental = rentalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rental not found"));
 
-        // Vérification propriétaire (optionnel)
         if (!rental.getOwner_id().getId().equals(owner.getId())) {
             throw new RuntimeException("Unauthorized");
         }
 
-        rental.setName(name);
-        rental.setSurface(surface);
-        rental.setPrice(price);
-        rental.setDescription(description);
-        if (pictureUrl != null) {
-            rental.setPicture(pictureUrl);
-        }
+        // On met à jour uniquement les champs éditables depuis le front
+        rental.setName(request.getName());
+        rental.setSurface(request.getSurface());
+        rental.setPrice(request.getPrice());
+        rental.setDescription(request.getDescription());
         rental.setUpdatedAt(LocalDateTime.now());
 
         rentalRepository.save(rental);
+    }
+
+    public Optional<RentalDTO> getRentalById(Integer id) {
+        return rentalRepository.findById(id).map(RentalDTO::fromEntity);
     }
 
 
