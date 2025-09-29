@@ -9,6 +9,15 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
+/**
+ * CORS Filter to handle Cross-Origin Resource Sharing (CORS) settings.
+ * This filter sets the necessary headers to allow cross-origin requests
+ * and handles preflight OPTIONS requests.
+ * 
+ * @Component Indicates that this class is a Spring component
+ * @Order Specifies the order of execution for this filter
+ */
+
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorsFilter implements Filter {

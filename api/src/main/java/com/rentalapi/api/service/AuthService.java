@@ -14,6 +14,15 @@ import com.rentalapi.api.security.JwtService;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Service class for handling authentication-related operations.
+ * This class provides methods for user registration, login, and retrieving
+ * user information based on JWT tokens.
+ * 
+ * @Service Indicates that this class is a Spring service component
+ * @RequiredArgsConstructor Generates a constructor with required arguments (final fields)
+ */
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {

@@ -6,6 +6,15 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+/**
+ * Data Transfer Object (DTO) for user registration.
+ * This class represents the data structure used to transfer user registration information.
+ * 
+ * @property name     The username of the registering user. Cannot be blank.
+ * @property email    The email address of the registering user. Must be a valid email format and cannot be blank.
+ * @property password The password for the user account. Cannot be blank.
+ */
+
 @Data
 public class UserRegisterDTO {
     @NotBlank(message = "username")

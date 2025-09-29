@@ -15,6 +15,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
+/*
+ * Controller for handling user-related endpoints, primarily for retrieving user information.
+ *
+ * Endpoints:
+ *   - GET /user/{id}: Retrieve detailed information about a specific user by their ID.
+ *
+ * Uses UserService for business logic related to user retrieval.
+ */
+
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor

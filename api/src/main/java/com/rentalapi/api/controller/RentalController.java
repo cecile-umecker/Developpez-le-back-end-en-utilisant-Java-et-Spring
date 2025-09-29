@@ -10,20 +10,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.rentalapi.api.dto.RentalCreateDTO;
+import com.rentalapi.api.dto.RentalCreateRequestDTO;
 import com.rentalapi.api.dto.RentalDTO;
 import com.rentalapi.api.dto.RentalSummaryDTO;
-import com.rentalapi.api.model.User;
-import com.rentalapi.api.repository.UserRepository;
-import com.rentalapi.api.service.FileStorageService;
+import com.rentalapi.api.dto.RentalUpdateRequestDTO;
+
 import com.rentalapi.api.service.RentalService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,14 +33,26 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
+/*
+ * Controller for handling rental-related endpoints such as creating, updating, 
+ * retrieving a list of rentals, and retrieving details of a specific rental.
+ *
+ * Endpoints:
+ *   - GET /rentals: Retrieve a list of all rentals.
+ *   - POST /rentals: Create a new rental (with picture upload via multipart/form-data).
+ *   - GET /rentals/{id}: Retrieve detailed information about a specific rental by ID.
+ *   - PUT /rentals/{id}: Update an existing rental's information (excluding picture).
+ *
+ * Uses RentalService for business logic related to rentals.
+ */
+
 @RestController
 @RequestMapping("/rentals")
 @RequiredArgsConstructor
 public class RentalController {
 
   private final RentalService rentalService;
-  private final UserRepository userRepository;
-  private final FileStorageService fileStorageService;
+
 
   @Operation(summary = "Get rentals list",
         parameters = {
@@ -90,38 +100,23 @@ public class RentalController {
         @ApiResponse(responseCode = "401", description = "Missing or invalid token",
                     content = @Content(mediaType = "application/json"))
     })
-  @PostMapping(consumes = "multipart/form-data")
-  public ResponseEntity<Map<String, String>> createRental(
-          @RequestParam String name,
-          @RequestParam Float surface,
-          @RequestParam Float price,
-          @RequestParam String description,
-          @RequestParam("picture") MultipartFile pictureFile,
-          @AuthenticationPrincipal UserDetails userDetails
-  ) throws IOException {
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<Map<String, String>> createRental(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                description = "Rental info",
+                required = true,
+                content = @Content(schema = @Schema(implementation = RentalCreateRequestDTO.class),
+                            mediaType = "multipart/form-data")
+            )            
+            @ModelAttribute RentalCreateRequestDTO request,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) throws IOException {
 
-      // récupérer l'utilisateur connecté
-      User owner = userRepository.findByEmail(userDetails.getUsername())
-              .orElseThrow(() -> new RuntimeException("User not found"));
+    rentalService.createRental(request, userDetails);
 
-      // traitement du fichier : ex. stockage et récupération de l'URL
-      String pictureUrl = fileStorageService.storeFile(pictureFile);
-
-      // créer DTO pour le service
-      RentalCreateDTO dto = RentalCreateDTO.builder()
-              .name(name)
-              .surface(surface)
-              .price(price)
-              .description(description)
-              .build();
-      
-      rentalService.createRental(dto, owner, pictureUrl);
-
-      Map<String, String> response = new HashMap<>();
-      response.put("message", "Rental created !");
-
-      return ResponseEntity.status(HttpStatus.CREATED).body(response);
-  }
+    return ResponseEntity.status(HttpStatus.CREATED)
+            .body(Map.of("message", "Rental created !"));
+    }
 
   @Operation(summary = "Get rental information",
         parameters = {
@@ -169,32 +164,16 @@ public class RentalController {
                     content = @Content(mediaType = "application/json"))
     })
   @PutMapping(value = "/{id}", consumes = "multipart/form-data")
-  public ResponseEntity<Map<String, String>> updateRental(
-          @PathVariable Integer id,
-          @RequestParam String name,
-          @RequestParam Float surface,
-          @RequestParam Float price,
-          @RequestParam String description,
-          @RequestParam(value = "picture", required = false) MultipartFile pictureFile,
-          @AuthenticationPrincipal UserDetails userDetails
-  ) throws IOException {
-
-      User owner = userRepository.findByEmail(userDetails.getUsername())
-              .orElseThrow(() -> new RuntimeException("User not found"));
-
-      String pictureUrl = null;
-      if (pictureFile != null && !pictureFile.isEmpty()) {
-          pictureUrl = fileStorageService.storeFile(pictureFile);
-      }
-
-      rentalService.updateRental(id, owner, name, surface, price, description, pictureUrl);
-
-      Map<String, String> response = new HashMap<>();
-      response.put("message", "Rental updated !");
-      return ResponseEntity.ok(response);
-  }
-
-
-
-
+    public ResponseEntity<Map<String, String>> updateRental(
+        @PathVariable Integer id,
+        @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Rental info",
+            required = true,
+            content = @Content(schema = @Schema(implementation = RentalUpdateRequestDTO.class))
+        )        @ModelAttribute RentalUpdateRequestDTO request,
+        @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        rentalService.updateRental(id, request, userDetails);
+        return ResponseEntity.ok(Map.of("message", "Rental updated !"));
+    }
 }

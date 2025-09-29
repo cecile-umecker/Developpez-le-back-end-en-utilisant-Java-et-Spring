@@ -7,6 +7,19 @@ import com.rentalapi.api.model.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+/**
+ * Data Transfer Object (DTO) for User entities.
+ * This class is used to transfer user data between processes while hiding the complexity
+ * of the underlying User entity.
+ *
+ * @Schema annotations are used to provide OpenAPI/Swagger documentation.
+ * 
+ * @Getter @Setter - Lombok annotations to automatically generate getters and setters
+ * @NoArgsConstructor - Lombok annotation to generate a no-args constructor
+ * @AllArgsConstructor - Lombok annotation to generate a constructor with all fields
+ * @Builder - Lombok annotation to implement the Builder pattern
+ */
+
 @Getter
 @Setter
 @NoArgsConstructor

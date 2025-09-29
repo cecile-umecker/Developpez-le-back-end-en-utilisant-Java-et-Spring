@@ -12,6 +12,15 @@ import com.rentalapi.api.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Service class for loading user-specific data.
+ * This class implements UserDetailsService to provide user details
+ * for authentication and authorization purposes.
+ * 
+ * @Service Indicates that this class is a Spring service component
+ * @RequiredArgsConstructor Generates a constructor with required arguments (final fields)
+ */
+
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {

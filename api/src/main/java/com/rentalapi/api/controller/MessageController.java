@@ -22,6 +22,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
+/*
+ * Controller for handling message-related operations.
+ *
+ * Endpoints:
+ *   - POST /messages: Send a message to the owner. Requires a valid Bearer token in the Authorization header.
+ *
+ * Uses MessageService for logic.
+ */
+
 @RestController
 @RequestMapping("/messages")
 @RequiredArgsConstructor

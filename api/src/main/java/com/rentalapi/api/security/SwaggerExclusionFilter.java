@@ -10,6 +10,14 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 
+/**
+ * Filter to exclude Swagger-related endpoints from certain security filters.
+ * This filter allows requests to Swagger UI and API docs to pass through without authentication.
+ * 
+ * @Component Indicates that this class is a Spring component
+ * @Order Specifies the order of execution for this filter
+ */
+
 @Component
 @Order(1)
 public class SwaggerExclusionFilter extends OncePerRequestFilter {

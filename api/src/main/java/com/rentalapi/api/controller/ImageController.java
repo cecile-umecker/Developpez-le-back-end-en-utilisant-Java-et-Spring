@@ -14,6 +14,29 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/*
+ * Controller for serving image files stored on the server.
+ *
+ * Provides endpoints to retrieve images by filename and handles CORS headers explicitly
+ * to allow cross-origin requests. The image files are served from the directory specified
+ * by the 'app.upload.dir' property, defaulting to "uploads" if not set.
+ *
+ * Endpoints:
+ *   - GET /images/{filename} : Retrieves the image file with the specified filename.
+ *     Returns the image as a org.springframework.core.io.Resource with appropriate
+ *     content type and CORS headers. If the file does not exist or is not readable,
+ *     returns 404 Not Found.
+ *   - OPTIONS /images/{filename} : Handles preflight CORS requests for image retrieval.
+ *     Returns the necessary CORS headers.
+ *
+ * CORS headers included:
+ *   - Access-Control-Allow-Origin: *
+ *   - Access-Control-Allow-Methods: GET, OPTIONS
+ *   - Access-Control-Allow-Headers: *
+ *   - Cross-Origin-Resource-Policy: cross-origin
+ *   - Cross-Origin-Embedder-Policy: unsafe-none
+ */
+
 @RestController
 @RequestMapping("/images")
 public class ImageController {

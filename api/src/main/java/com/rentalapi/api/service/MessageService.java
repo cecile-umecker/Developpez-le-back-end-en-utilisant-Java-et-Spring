@@ -14,6 +14,14 @@ import com.rentalapi.api.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Service class for handling message-related operations.
+ * This class provides methods for sending messages associated with rentals and users.
+ * 
+ * @Service Indicates that this class is a Spring service component
+ * @RequiredArgsConstructor Generates a constructor with required arguments (final fields)
+ */
+
 @Service
 @RequiredArgsConstructor
 public class MessageService {
